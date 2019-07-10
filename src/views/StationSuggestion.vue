@@ -1,20 +1,18 @@
 <template>
   <div class="home">
     <NavBar/>
-    <Dashboard msg="Welcome to Your Vue.js App" />
+    <Suggestion/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Dashboard from "@/components/Dashboard.vue";
 import NavBar from "@/components/NavBar.vue";
 import Suggestion from "@/components/Suggestion.vue";
 
 export default {
-  name: "home",
+  name: "station_suggestion",
   components: {
-    Dashboard,
     NavBar,
     Suggestion
   }

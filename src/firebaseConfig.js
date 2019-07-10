@@ -20,6 +20,13 @@ const database = app.database();
 window.firebase = firebase;
 
 const stationsCollection = db.collection("stations");
+const suggestedStation = db.collection("suggested_station");
 const feedbackCollection = db.collection("feedback");
 
-export { db, database, stationsCollection, feedbackCollection };
+export {
+  db,
+  database,
+  stationsCollection,
+  suggestedStation,
+  feedbackCollection
+};

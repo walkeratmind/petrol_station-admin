@@ -39,7 +39,7 @@
                         <button data-target="confirm" @click="deleteId = station.id"
                             class="waves-effect waves-light btn modal-trigger action_btn">
                             Delete
-                            <i class="material-icons right outlined">delete</i>
+                            <i class="material-icons right outlined">delete_outline</i>
                         </button>
 
 
@@ -185,7 +185,7 @@
     </div>
 </template>
 
-<style type="text/css" scoped>
+<style type="text/css">
     #google_map {
         width: 100%;
         height: 320px;
