@@ -39,8 +39,8 @@
 </html>
 
 <!-- For Location Picker -->
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChpMLhvOEaXGF4wb0LkGCBKUuw4QS7Ng4" async="" defer=""></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChpMLhvOEaXGF4wb0LkGCBKUuw4QS7Ng4"
+  async="" defer=""></script>
 <script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
 
 
@@ -55,6 +55,16 @@
 <script>
   $(document).ready(function () {
     $('.modal').modal();
+
+    
+    $('input').each(function (element, i) {
+      if (element.value !== undefined && element.value.length > 0) {
+        $(this).siblings('label').addClass('active');
+        M.updateTextFields();
+      } else {
+        $(this).siblings('label').removeClass('active');
+      }
+    });
   });
 
 </script>

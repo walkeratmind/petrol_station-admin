@@ -29,16 +29,19 @@
                         <td>{{ station.data().petrolPrice }}</td>
                         <td>{{ station.data().dieselPrice }}</td>
 
-                        <button data-target="editStationModal" class="waves-effect waves-light  modal-trigger btn left"
-                            @click="editStationId = station.id;">
+
+                        <button data-target="editStationModal"
+                            class="waves-effect waves-light  modal-trigger btn action_btn"
+                            @click="editStationId = station.id; getFirestoreDocById(station.id);">
                             Edit
                             <i class=" material-icons right">edit</i>
                         </button>
                         <button data-target="confirm" @click="deleteId = station.id"
-                            class="waves-effect waves-light btn right modal-trigger">
+                            class="waves-effect waves-light btn modal-trigger action_btn">
                             Delete
                             <i class="material-icons right outlined">delete</i>
                         </button>
+
 
                     </tr>
                 </tbody>
@@ -67,15 +70,15 @@
             <div class="modal-content">
                 <h4>Add Gas Station</h4>
                 <div class="row">
-                    <form action class="col s12">
+                    <form action class="form col s12">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
-                            <input id="station_name" type="text" class="validate" v-model="newStation.name" />
+                            <input id="station_name" type="text" class="validate" v-model="newStation.name" required/>
                             <label for="station_name">Gas Station Name</label>
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix">place</i>
-                            <input id="location" type="text" class="validate" v-model="newStation.location" />
+                            <input id="location" type="text" class="validate" v-model="newStation.location" required/>
                             <label for="location">Location</label>
                         </div>
                         <!-- <div class="col s12">
@@ -84,11 +87,11 @@
                         </div> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude" />
+                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude" required/>
                                 <label for="latitude">Latitude</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude" />
+                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude" required/>
                                 <label for="Longitude">Longitude</label>
                             </div>
                         </div>
@@ -108,13 +111,14 @@
                                 <label for="diesel_price">Diesel Price</label>
                             </div>
 
+                            <button @click="addStation"
+                                class=" waves-effect waves-green btn right">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-                <button @click="addStation" class="modal-close waves-effect waves-green btn-flat">Submit</button>
             </div>
         </div>
 
@@ -123,15 +127,17 @@
             <div class="modal-content">
                 <h4>Edit Gas Station</h4>
                 <div class="row">
-                    <form action class="col s12">
+                    <form action class="form col s12" novalidate="novalidate">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
-                            <input id="station_name" type="text" class="validate" v-model="savedStations.name" />
-                            <label for="station_name">Gas Station Name</label>
+                            <input id="station_name" type="text" class="validate" v-model="editingStation.name"
+                                required />
+                            <label class="active" for="station_name">Gas Station Name</label>
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix">place</i>
-                            <input id="location" type="text" class="validate" v-model="newStation.location" />
+                            <input id="location" type="text" class="validate" v-model="editingStation.location"
+                                required />
                             <label for="location">Location</label>
                         </div>
                         <!-- <div class="col s12">
@@ -140,12 +146,14 @@
                         </div> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude" />
-                                <label for="latitude">Latitude</label>
+                                <input id="latitude" type="text" class="validate" v-model="editingStation.latitude"
+                                    required />
+                                <label class="active" for="latitude">Latitude</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude" />
-                                <label for="Longitude">Longitude</label>
+                                <input id="longitude" type="text" class="validate" v-model="editingStation.longitude"
+                                    required />
+                                <label class="active" for="Longitude">Longitude</label>
                             </div>
                         </div>
                         <div class="row">
@@ -154,23 +162,24 @@
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">money</i>
                                 <input id="petrol_price" type="text" class="validate"
-                                    v-model="newStation.petrolPrice" />
+                                    v-model="editingStation.petrolPrice" />
                                 <label for="petrol_price">Petrol Price</label>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">money</i>
                                 <input id="diesel_price" type="text" class="validate"
-                                    v-model="newStation.dieselPrice" />
+                                    v-model="editingStation.dieselPrice" />
                                 <label for="diesel_price">Diesel Price</label>
                             </div>
 
+                            <button @click="editStation(editStationId)" type="submit"
+                                class="waves-effect waves-green btn right">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-                <button @click="addStation" class="modal-close waves-effect waves-green btn-flat">Submit</button>
             </div>
         </div>
     </div>
@@ -188,11 +197,13 @@
         border-radius: 4px;
         color: white;
     }
+
+    .action_btn {
+        margin-left: 4px;
+    }
 </style>
 
 <script>
-    import LocationPicker from 'location-picker';
-    import * as VueGoogleMaps from 'vue2-google-maps'
     import {
         stat
     } from 'fs';
@@ -224,13 +235,18 @@
 
         },
         mounted() {
-            // let locationPickerScript = document.createElement('script')
-            // locationPickerScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyChpMLhvOEaXGF4wb0LkGCBKUuw4QS7Ng4')
-            // document.head.appendChild(locationPickerScript)
-            // // let locationPickerScript = document.createElement('script')
-            // // locationPickerScript.setAttribute('src', 'https://unpkg.com/location-picker/dist/location-picker.min.js')
-            // // document.head.appendChild(locationPickerScript)
-            // this.initMap();
+            // var stations = [];
+            //     fb.stationsCollection.get().then(querySnapshot => {
+            //         querySnapshot.forEach(doc => {
+            //             console.log(doc.id, " => ", doc.data());
+            //             stations.push(doc);
+            //         })
+            //     }).catch(err => {
+            //         console.log("Error getting documents: ", error);
+            //     })
+
+            //     this.savedStations = stations;
+
         },
         methods: {
             addStation() {
@@ -253,6 +269,8 @@
                 }).catch(err => {
                     console.log(err)
                 })
+
+                this.savedStations = this.fetchStationsData();
 
             },
             fetchStationsData() {
@@ -280,34 +298,71 @@
             //     // const snapshot = await fb.stationsCollection.get();
             //     // return snapshot.docs.map(doc => doc.data());
             // }
-            editStation(key) {
+            getFirestoreDocById(id) {
+                fb.stationsCollection.doc(id).get().then(doc => {
+                        this.editingStation = {
+                            name: doc.data().name,
+                            location: doc.data().location,
+                            latitude: doc.data().latitude,
+                            longitude: doc.data().longitude,
+                            petrolPrice: doc.data().petrolPrice,
+                            dieselPrice: doc.data().dieselPrice,
+
+                        };
+                        console.log("Doc : Id: " + id + " , " + doc.data().name);
+                    })
+                    .catch(err => {
+                        console.log("Error getting document with ID : " + id + "," + error);
+                    })
+
+            },
+            editStation(id) {
+
+                // Add a new document in collection "cities"
+                fb.stationsCollection.doc(id).set({
+                        name: this.editingStation.name,
+                        location: this.editingStation.location,
+                        latitude: this.editingStation.latitude,
+                        longitude: this.editingStation.longitude,
+                        petrolPrice: this.editingStation.petrolPrice,
+                        dieselPrice: this.editingStation.dieselPrice
+                    }, {
+                        merge: true
+                    })
+                    .then(function () {
+                        console.log("Document successfully written!");
+                    })
+                    .catch(function (error) {
+                        console.error("Error writing document: ", error);
+                    });
+
+                // fb.stationsCollection
+                //     .doc(id)
+                //     .get()
+                //     .then(snap => {
+                //         return snap.docs[0].ref.update({
+                //             name: this.editingStation.name,
+                //             location: this.editingStation.location,
+                //             latitude: this.editingStation.latitude,
+                //             longitude: this.editingStation.longitude,
+                //             petrolPrice: this.editingStation.petrolPrice,
+                //             dieselPrice: this.editingStation.dieselPrice
+                //         });
+                //     })
+                //     .then(() => {
+                //         console.log('Successfully updated the record')
+                //     })
+                //     .catch(error => {
+                //         console.error('There was an error editing the record: ' + error)
+                //     })
+                this.savedStations = this.fetchStationsData();
 
             },
             deleteStation(key) {
                 fb.stationsCollection.doc(key).delete();
+                this.savedStations = this.fetchStationsData();
+
             }
-
-
-            // src() {
-            //     return this.url;
-            // },
-            // initMap() {
-
-            //     // Initialize locationPicker plugin
-            //     var lp = new LocationPicker('google_map', {
-            //         setCurrentPosition: true, // You can omit this, defaults to true
-            //     }, {
-            //         zoom: 15 // You can set any google map options here, zoom defaults to 15
-            //     });
-
-            //     // Listen to map idle event, listening to idle event more accurate than listening to ondrag event
-            //     google.maps.event.addListener(lp.map, 'idle', function (event) {
-            //         // Get current location and show it in HTML
-            //         var location = lp.getMarkerPosition();
-            //         console.log("Location: " + location.lat + ',' + location
-            //             .lng);
-            //     });
-            // }
         },
         created() {
             this.savedStations = this.fetchStationsData();
