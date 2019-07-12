@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 let app = firebase.initializeApp(firebaseConfig);
 
-// Initialize cloud Firestore through database
+// Initialize cloud Firestore for database
 const db = firebase.firestore();
 const database = app.database();
 window.firebase = firebase;

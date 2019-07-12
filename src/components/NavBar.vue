@@ -1,10 +1,10 @@
 <template>
-    <div class="nav">
+    <div class="navBar">
         <nav>
             <div class="nav-wrapper">
                 <router-link class="nav-link" to="/">Petrol Station Admin</router-link>
 
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <ul id="nav-mobile" class="right">
                     <li>
                         <router-link class="nav-link" to="/suggestions">Suggestions</router-link>
                     </li>
@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        name: "nav",
+        name: "NavBar",
 
         methods: {
 

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <NavBar/>
-    <Dashboard msg="Welcome to Your Vue.js App" />
+    <Dashboard />
   </div>
 </template>
 

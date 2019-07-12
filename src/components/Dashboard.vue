@@ -66,19 +66,19 @@
         </div>
 
         <!--Add Station Modal Structure -->
-        <div id="formModal" class="modal modal-fixed-footer">
+        <div id="formModal" class="modal modal-fixed-footer" style="height: 90%;max-height: 100%;">
             <div class="modal-content">
                 <h4>Add Gas Station</h4>
                 <div class="row">
-                    <form action class="form col s12">
+                    <form v-on:submit.prevent="addStation" class="form col s12">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
-                            <input id="station_name" type="text" class="validate" v-model="newStation.name" required/>
+                            <input id="station_name" type="text" class="validate" v-model="newStation.name" required />
                             <label for="station_name">Gas Station Name</label>
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix">place</i>
-                            <input id="location" type="text" class="validate" v-model="newStation.location" required/>
+                            <input id="location" type="text" class="validate" v-model="newStation.location" required />
                             <label for="location">Location</label>
                         </div>
                         <!-- <div class="col s12">
@@ -87,11 +87,13 @@
                         </div> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude" required/>
+                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude"
+                                    required />
                                 <label for="latitude">Latitude</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude" required/>
+                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude"
+                                    required />
                                 <label for="Longitude">Longitude</label>
                             </div>
                         </div>
@@ -111,8 +113,7 @@
                                 <label for="diesel_price">Diesel Price</label>
                             </div>
 
-                            <button @click="addStation"
-                                class=" waves-effect waves-green btn right">Submit</button>
+                            <button type="submit" class="modal-close waves-effect waves-green btn right">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -123,11 +124,11 @@
         </div>
 
         <!--Edit Station Modal Structure -->
-        <div id="editStationModal" class="modal modal-fixed-footer">
+        <div id="editStationModal" class="modal modal-fixed-footer" style="height: 90%;max-height: 100%;">
             <div class="modal-content">
                 <h4>Edit Gas Station</h4>
                 <div class="row">
-                    <form action class="form col s12" novalidate="novalidate">
+                    <form v-on:submit.prevent="editStation(editStationId)" class="form col s12" novalidate="novalidate">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
                             <input id="station_name" type="text" class="validate" v-model="editingStation.name"
@@ -172,8 +173,7 @@
                                 <label for="diesel_price">Diesel Price</label>
                             </div>
 
-                            <button @click="editStation(editStationId)" type="submit"
-                                class="waves-effect waves-green btn right">Submit</button>
+                            <button type="submit" class="modal-close waves-effect waves-green btn right">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -234,6 +234,7 @@
             }
 
         },
+
         mounted() {
             // var stations = [];
             //     fb.stationsCollection.get().then(querySnapshot => {
