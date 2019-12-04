@@ -2,7 +2,7 @@
 
 ## Description
 
-This is an admin site for my [petrol station] (https://github.com/walkeratmind/PetrolStation) project. This was needed to add petrol stations and their details manually. From here, we can perform CRUD operations for petrol station project.
+This is an admin site for my [petrol station](https://github.com/walkeratmind/PetrolStation) project. This was needed to add petrol stations and their details manually. From here, we can perform CRUD operations for petrol station project.
 
 ## Tech Stack
 
