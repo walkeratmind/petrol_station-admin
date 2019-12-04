@@ -82,6 +82,9 @@
                 approveId: '',
             }
         },
+        firebase() {
+            this.suggestions = fb.suggestedStation;
+        },
         methods: {
             approveSuggestion(id) {
                 this.getFirestoreDocById(id);
@@ -113,20 +116,20 @@
             },
             getFirestoreDocById(id) {
                 fb.suggestedStation.doc(id).get().then(doc => {
-                        this.station = {
-                            name: doc.data().name,
-                            location: doc.data().location,
-                            latitude: doc.data().latitude,
-                            longitude: doc.data().longitude,
-                            petrolPrice: doc.data().petrolPrice,
-                            dieselPrice: doc.data().dieselPrice,
+                    this.station = {
+                        name: doc.data().name,
+                        location: doc.data().location,
+                        latitude: doc.data().latitude,
+                        longitude: doc.data().longitude,
+                        petrolPrice: doc.data().petrolPrice,
+                        dieselPrice: doc.data().dieselPrice,
 
-                        };
-                        console.log("Doc : Id: " + id + " , " + doc.data().name);
-                    })
-                    // .catch(err => {
-                    //     console.log("Error getting document with ID : " + id + "," + error);
-                    // })
+                    };
+                    console.log("Doc : Id: " + id + " , " + doc.data().name);
+                })
+                // .catch(err => {
+                //     console.log("Error getting document with ID : " + id + "," + error);
+                // })
 
             },
             fetchSuggestionData() {
@@ -151,6 +154,9 @@
         created() {
             this.suggestions = this.fetchSuggestionData();
 
+        },
+        mounted() {
+            $('.modal').modal();
         }
 
     }

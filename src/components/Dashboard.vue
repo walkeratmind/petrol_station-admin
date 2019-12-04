@@ -73,12 +73,14 @@
                     <form v-on:submit.prevent="addStation" class="form col s12">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
-                            <input id="station_name" type="text" class="validate" v-model="newStation.name" required />
+                            <input id="station_name" type="text" name="name" class="validate" v-model="newStation.name"
+                                required />
                             <label for="station_name">Gas Station Name</label>
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix">place</i>
-                            <input id="location" type="text" class="validate" v-model="newStation.location" required />
+                            <input id="location" type="text" name="location" class="validate"
+                                v-model="newStation.location" required />
                             <label for="location">Location</label>
                         </div>
                         <!-- <div class="col s12">
@@ -87,13 +89,13 @@
                         </div> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="latitude" type="text" class="validate" v-model="newStation.latitude"
-                                    required />
+                                <input id="latitude" name="latitude" type="text" class="validate"
+                                    v-model="newStation.latitude" required />
                                 <label for="latitude">Latitude</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="longitude" type="text" class="validate" v-model="newStation.longitude"
-                                    required />
+                                <input id="longitude" name="longitude" type="text" class="validate"
+                                    v-model="newStation.longitude" required />
                                 <label for="Longitude">Longitude</label>
                             </div>
                         </div>
@@ -131,14 +133,14 @@
                     <form v-on:submit.prevent="editStation(editStationId)" class="form col s12" novalidate="novalidate">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">local_gas_station</i>
-                            <input id="station_name" type="text" class="validate" v-model="editingStation.name"
-                                required />
+                            <input id="station_name" name="name" type="text" class="validate"
+                                v-model="editingStation.name" required />
                             <label class="active" for="station_name">Gas Station Name</label>
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix">place</i>
-                            <input id="location" type="text" class="validate" v-model="editingStation.location"
-                                required />
+                            <input id="location" name="location" type="text" class="validate"
+                                v-model="editingStation.location" required />
                             <label for="location">Location</label>
                         </div>
                         <!-- <div class="col s12">
@@ -147,13 +149,13 @@
                         </div> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="latitude" type="text" class="validate" v-model="editingStation.latitude"
-                                    required />
+                                <input id="latitude" name="latitude" type="text" class="validate"
+                                    v-model="editingStation.latitude" required />
                                 <label class="active" for="latitude">Latitude</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="longitude" type="text" class="validate" v-model="editingStation.longitude"
-                                    required />
+                                <input id="longitude" name="longitude" type="text" class="validate"
+                                    v-model="editingStation.longitude" required />
                                 <label class="active" for="Longitude">Longitude</label>
                             </div>
                         </div>
@@ -207,6 +209,9 @@
     import {
         stat
     } from 'fs';
+    import {
+        functions
+    } from 'firebase';
 
     // import { database } from '../main';
     const fb = require('../firebaseConfig.js');
@@ -230,12 +235,25 @@
                 editFormMode: [],
                 editingStation: [],
                 deleteId: '',
-                editStationId: ''
+                editStationId: '',
+                errors: []
             }
 
         },
 
         mounted() {
+
+            $('.modal').modal();
+
+           
+
+            var isModalOpen = M.Modal.getInstance(isOpen);
+
+            if (isModalOpen) {
+                console.log("Model is opended, " + isModalOpen);
+                M.updateTextFields();
+            }
+
             // var stations = [];
             //     fb.stationsCollection.get().then(querySnapshot => {
             //         querySnapshot.forEach(doc => {
@@ -249,8 +267,15 @@
             //     this.savedStations = stations;
 
         },
+        ready() {
+             
+            M.updateTextFields();
+
+
+        },
         methods: {
             addStation() {
+                this.checkForm();
                 fb.stationsCollection.add({
                     name: this.newStation.name,
                     location: this.newStation.location,
@@ -272,6 +297,15 @@
                 })
 
                 this.savedStations = this.fetchStationsData();
+
+            },
+            checkForm: function (e) {
+                if (this.name && this.location && this.latitude && this.longitude) {
+                    return true;
+                } else {
+                    this.errors = [];
+                    this.errors.push("Please fill the required data");
+                }
 
             },
             fetchStationsData() {

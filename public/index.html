@@ -54,17 +54,19 @@
 
 <script>
   $(document).ready(function () {
-    $('.modal').modal();
+    // $('.modal').modal();
+
+    M.updateTextFields();
 
     
-    $('input').each(function (element, i) {
-      if (element.value !== undefined && element.value.length > 0) {
-        $(this).siblings('label').addClass('active');
-        M.updateTextFields();
-      } else {
-        $(this).siblings('label').removeClass('active');
-      }
-    });
+    // $('input').each(function (element, i) {
+    //   if (element.value !== undefined && element.value.length > 0) {
+    //     $(this).siblings('label').addClass('active');
+    //     M.updateTextFields();
+    //   } else {
+    //     $(this).siblings('label').removeClass('active');
+    //   }
+    // });
   });
 
 </script>

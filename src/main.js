@@ -15,7 +15,7 @@ Vue.config.productionTip = false;
 
 router.beforeResolve((to, from, next) => {
   if (to.name) {
-    NProgress.start()
+    NProgress.start();
   }
   next();
 });
